@@ -11,13 +11,11 @@ MAINTAINER MichaelChuai 18alexanderm117@tongji.edu.cn
 
 RUN apt-get update && apt-get install -y bzip2
 
-RUN echo '\nexport CUDA_ROOT=/usr/local/cuda' >> /root/.bashrc && \
-	echo '\nexport PATH=$CUDA_ROOT/bin:$PATH' >> /root/.bashrc && \
-	echo '\nexport LD_LIBRARY_PATH=/usr/lib64:$CUDA_ROOT/lib64:/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH' >> /root/.bashrc
+ENV CUDA_ROOT /usr/local/cuda
+ENV LD_LIBRARY_PATH /usr/lib64:$CUDA_ROOT/lib64:/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+ENV PATH /usr/local/anaconda3/bin:$CUDA_ROOT/bin:$PATH
 
 # Install Anaconda
-RUN echo '\nexport PATH=/usr/local/anaconda3/bin:$PATH' >> /root/.bashrc
-
 COPY Anaconda3-5.0.1-Linux-x86_64.sh /root
 
 RUN bash /root/Anaconda3-5.0.1-Linux-x86_64.sh -b -p /usr/local/anaconda3 && \

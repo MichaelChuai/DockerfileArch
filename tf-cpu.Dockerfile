@@ -9,9 +9,9 @@ MAINTAINER MichaelChuai 18alexanderm117@tongji.edu.cn
 
 RUN apt-get update && apt-get install -y bzip2
 
-# Install Anaconda
-RUN echo '\nexport PATH=/usr/local/anaconda3/bin:$PATH' >> /root/.bashrc
+ENV PATH /usr/local/anaconda3/bin:$PATH
 
+# Install Anaconda
 COPY Anaconda3-5.0.1-Linux-x86_64.sh /root
 
 RUN bash /root/Anaconda3-5.0.1-Linux-x86_64.sh -b -p /usr/local/anaconda3 && \
