@@ -25,4 +25,6 @@ RUN	/usr/local/anaconda3/bin/pip install -i https://pypi.tuna.tsinghua.edu.cn/si
 	/usr/local/anaconda3/bin/pip install -i https://pypi.tuna.tsinghua.edu.cn/simple dm-sonnet==1.16 && \
 	/usr/local/anaconda3/bin/pip install -i https://pypi.tuna.tsinghua.edu.cn/simple progress==1.3
 
+EXPOSE 6006
+
 CMD ["/bin/bash"]
