@@ -1,8 +1,8 @@
 ### Ubuntu == 16.04
 ### Anaconda3 == 5.0.1
-### Numpy == 1.14.0
-### Tensorflow == 1.5.0
-### Sonnet == 1.16
+### Numpy == 1.14.1
+### Tensorflow == 1.6.0
+### Sonnet == 1.17
 ### With CUDA support:
 ### CUDA == 9.0
 ### CUDNN = 7
@@ -23,11 +23,15 @@ COPY Anaconda3-5.0.1-Linux-x86_64.sh /root
 RUN bash /root/Anaconda3-5.0.1-Linux-x86_64.sh -b -p /usr/local/anaconda3 && \
 	rm -f /root/Anaconda3-5.0.1-Linux-x86_64.sh
 
+# Install dependencies
+RUN /usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.tuna.tsinghua.edu.cn/simple numpy==1.14.1 && \
+	/usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.tuna.tsinghua.edu.cn/simple progress==1.3
+
 # Install Tensorflow
-RUN	/usr/local/anaconda3/bin/pip install -i https://pypi.tuna.tsinghua.edu.cn/simple numpy==1.14.0 && \
-	/usr/local/anaconda3/bin/pip install -i https://pypi.tuna.tsinghua.edu.cn/simple tensorflow-gpu==1.5.0 && \
-	/usr/local/anaconda3/bin/pip install -i https://pypi.tuna.tsinghua.edu.cn/simple dm-sonnet-gpu==1.16 && \
-	/usr/local/anaconda3/bin/pip install -i https://pypi.tuna.tsinghua.edu.cn/simple progress==1.3
+RUN	/usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.tuna.tsinghua.edu.cn/simple tensorflow-gpu==1.6.0
+
+# Install Tensorflow-based packages
+RUN /usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.tuna.tsinghua.edu.cn/simple dm-sonnet-gpu==1.17
 
 EXPOSE 6006
 
