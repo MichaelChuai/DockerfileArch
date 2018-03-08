@@ -33,12 +33,12 @@ def main():
     arg = opts.ARG
 
     if volumes_from is None:
-        cmd = 'docker run -it --rm -v $(pwd):{3} --name {0} --runtime {2} -w {3} {4} {5} {6}'.format(name, volumes_from,
+        cmd = 'docker run -it --rm -P -v $(pwd):{3} --name {0} --runtime {2} -w {3} {4} {5} {6}'.format(name, volumes_from,
                                                                                                      runtime, workdir,
                                                                                                      image, command,
                                                                                                      arg)
     else:
-        cmd = 'docker run -it --rm -v $(pwd):{3} --name {0} --runtime {2} --volumes-from {1} -w {3} {4} {5} {6}'.format(
+        cmd = 'docker run -it --rm -P -v $(pwd):{3} --name {0} --runtime {2} --volumes-from {1} -w {3} {4} {5} {6}'.format(
             name, volumes_from,
             runtime, workdir,
             image, command, arg)
