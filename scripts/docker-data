@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker run -itd --name $1 -v $(pwd):/data alpine
