@@ -14,10 +14,11 @@ def main():
     current_directory = r'''`echo $(pwd)|sed 's/\///1;s/\//_/g'`'''
 
     p.add_argument('--name', default=current_directory, metavar='string', help='Assign a name to the container')
-    p.add_argument('--volumes-from', metavar='list', help='Mount volumes from the specified container(s)')
-    p.add_argument('--runtime', default='nvidia', metavar='string', help='Runtime')
+    p.add_argument('-p', metavar='string', help='Port', nargs='*')
+    p.add_argument('--volumes-from', metavar='string', help='Mount volumes from the specified container(s)', nargs='*')
     p.add_argument('-w', '--workdir', default='/root/project', metavar='string',
                    help='Working directory inside the container')
+    p.add_argument('-t', type=int, choices=(0, 1), help='Container type, 0 for CPU, 1 for gpu', required=True)
     p.add_argument('IMAGE', default='work:latest', nargs='?')
     p.add_argument('COMMAND', default='bash', nargs='?')
     p.add_argument('ARG', default='', nargs='?')
@@ -25,23 +26,37 @@ def main():
     opts = p.parse_args()
 
     name = opts.name
+    port_mapping = opts.p
     volumes_from = opts.volumes_from
-    runtime = opts.runtime
     workdir = opts.workdir
+    container_type = opts.t
     image = opts.IMAGE
     command = opts.COMMAND
     arg = opts.ARG
 
-    if volumes_from is None:
-        cmd = 'docker run -it --rm -P -v $(pwd):{3} --name {0} --runtime {2} -w {3} {4} {5} {6}'.format(name, volumes_from,
-                                                                                                     runtime, workdir,
-                                                                                                     image, command,
-                                                                                                     arg)
+    if port_mapping is None:
+        port_mapping_desp = ''
+    elif len(port_mapping) == 1 and port_mapping[0] == 'P':
+        port_mapping_desp = '-P'
     else:
-        cmd = 'docker run -it --rm -P -v $(pwd):{3} --name {0} --runtime {2} --volumes-from {1} -w {3} {4} {5} {6}'.format(
-            name, volumes_from,
-            runtime, workdir,
-            image, command, arg)
+        port_mapping_desp = ' '.join(['-p {0}'.format(p) for p in port_mapping])
+
+    if volumes_from is None:
+        volumes_from_desp = ''
+    else:
+        volumes_from_desp = ' '.join(['--volumes-from {0}'.format(v) for v in volumes_from])
+
+    if container_type == 0:
+        runtime_desp = ''
+    else:
+        runtime_desp = '--runtime nvidia'
+
+    cmd = 'docker run -it --rm {1} {2} -v $(pwd):{3} --name {0} {4} -w {3} {5} {6} {7}'.format(name, port_mapping_desp,
+                                                                                               volumes_from_desp,
+                                                                                               workdir,
+                                                                                               runtime_desp, image,
+                                                                                               command,
+                                                                                               arg)
 
     exit_code = subprocess.call(cmd, executable='/bin/bash', shell=True)
     return exit_code

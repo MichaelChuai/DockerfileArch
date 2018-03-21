@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-docker run -itd --restart=always --name $1 -v $(pwd):/data alpine
+name=$1
+
+docker run -itd --restart=always --name $name -v $(pwd):/data/$name alpine
