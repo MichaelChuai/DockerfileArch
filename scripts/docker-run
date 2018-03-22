@@ -19,6 +19,8 @@ def main():
     p.add_argument('-w', '--workdir', default='/root/project', metavar='string',
                    help='Working directory inside the container')
     p.add_argument('-t', type=int, choices=(0, 1), help='Container type, 0 for CPU, 1 for gpu', required=True)
+    p.add_argument('-z', type=int, default=0, choices=(0, 1),
+                   help='Keep container or not, 1 for keeping, 0(default) not')
     p.add_argument('IMAGE', default='work:latest', nargs='?')
     p.add_argument('COMMAND', default='bash', nargs='?')
     p.add_argument('ARG', default='', nargs='?')
@@ -30,6 +32,7 @@ def main():
     volumes_from = opts.volumes_from
     workdir = opts.workdir
     container_type = opts.t
+    keep_container = opts.z
     image = opts.IMAGE
     command = opts.COMMAND
     arg = opts.ARG
@@ -51,12 +54,18 @@ def main():
     else:
         runtime_desp = '--runtime nvidia'
 
-    cmd = 'docker run -it --rm {1} {2} -v $(pwd):{3} --name {0} {4} -w {3} {5} {6} {7}'.format(name, port_mapping_desp,
-                                                                                               volumes_from_desp,
-                                                                                               workdir,
-                                                                                               runtime_desp, image,
-                                                                                               command,
-                                                                                               arg)
+    if keep_container == 0:
+        keep_container_desp = '--rm'
+    else:
+        keep_container_desp = ''
+
+    cmd = 'docker run -it {1} {2} {4} -v $(pwd):{3} --name {0} {5} -w {3} {6} {7} {8}'.format(name, port_mapping_desp,
+                                                                                              volumes_from_desp,
+                                                                                              workdir,
+                                                                                              keep_container_desp,
+                                                                                              runtime_desp, image,
+                                                                                              command,
+                                                                                              arg)
 
     exit_code = subprocess.call(cmd, executable='/bin/bash', shell=True)
     return exit_code
