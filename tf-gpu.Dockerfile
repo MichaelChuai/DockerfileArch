@@ -10,8 +10,6 @@ FROM conda-cuda:latest
 
 MAINTAINER MichaelChuai 18alexanderm117@tongji.edu.cn
 
-ENV CUDA_VISIBLE_DEVICES 0
-
 # Install dependencies
 RUN /usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple progress==1.3
 
