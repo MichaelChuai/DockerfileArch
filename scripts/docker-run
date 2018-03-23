@@ -18,7 +18,7 @@ def main():
     p.add_argument('--volumes-from', metavar='string', help='Mount volumes from the specified container(s)', nargs='*')
     p.add_argument('-w', '--workdir', default='/root/project', metavar='string',
                    help='Working directory inside the container')
-    p.add_argument('-t', type=int, choices=(0, 1), help='Container type, 0 for CPU, 1 for gpu', required=True)
+    p.add_argument('-t', type=int, help='Container type, -1 for CPU, -2 for all gpus, 0 for gpu-0, 1 for gpu-1, etc.', required=True)
     p.add_argument('-z', type=int, default=0, choices=(0, 1),
                    help='Keep container or not, 1 for keeping, 0(default) not')
     p.add_argument('IMAGE', default='work:latest', nargs='?')
@@ -49,10 +49,12 @@ def main():
     else:
         volumes_from_desp = ' '.join(['--volumes-from {0}'.format(v) for v in volumes_from])
 
-    if container_type == 0:
+    if container_type == -1:
         runtime_desp = ''
-    else:
+    elif container_type == -2:
         runtime_desp = '--runtime nvidia'
+    else:
+        runtime_desp = '--runtime nvidia -e CUDA_VISIBLE_DEVICES={0}'.format(container_type)
 
     if keep_container == 0:
         keep_container_desp = '--rm'
