@@ -1,9 +1,9 @@
-### tfutil == 0.2
+### tfutil == 0.2.1
 
 FROM tfdev-gpu
 
 MAINTAINER MichaelChuai 18alexanderm117@tongji.edu.cn
 
-RUN	/usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple tfutil==0.2
+RUN	/usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple tfutil==0.2.1
 
 CMD ["/bin/bash"]
