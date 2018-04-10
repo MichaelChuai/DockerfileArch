@@ -6,7 +6,7 @@
 ### CUDA == 9.0
 ### CUDNN == 7
 
-FROM conda-cuda:latest
+FROM gconda:latest
 
 MAINTAINER MichaelChuai 18alexanderm117@tongji.edu.cn
 

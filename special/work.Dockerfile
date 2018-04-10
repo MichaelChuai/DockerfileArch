@@ -1,4 +1,4 @@
-FROM tfdev-gpu
+FROM gtf
 
 MAINTAINER MichaelChuai 18alexanderm117@tongji.edu.cn
 
