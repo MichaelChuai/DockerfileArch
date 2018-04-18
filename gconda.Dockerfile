@@ -18,6 +18,7 @@ RUN apt-get update && \
 
 # Install Anaconda
 COPY Anaconda3-5.1.0-Linux-x86_64.sh /root
+COPY cudatoolkit-9.0-h13b8566_0.tar.bz2 /root
 
 RUN bash /root/Anaconda3-5.1.0-Linux-x86_64.sh -b -p /usr/local/anaconda3 && \
 	rm -f /root/Anaconda3-5.1.0-Linux-x86_64.sh
@@ -26,7 +27,8 @@ RUN bash /root/Anaconda3-5.1.0-Linux-x86_64.sh -b -p /usr/local/anaconda3 && \
 RUN conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ && \
 	conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/ && \
 	conda config --set show_channel_urls yes && \
-	conda install cudatoolkit-9.0-h13b8566_0.tar.bz2
+	conda install /root/cudatoolkit-9.0-h13b8566_0.tar.bz2 && \
+	rm -f /root/cudatoolkit-9.0-h13b8566_0.tar.bz2
 
 # Add a notebook profile.
 RUN mkdir -p -m 700 /root/.jupyter/ && \
