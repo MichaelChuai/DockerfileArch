@@ -13,19 +13,28 @@ ENV CUDA_ROOT /usr/local/cuda
 ENV LD_LIBRARY_PATH /usr/lib64:$CUDA_ROOT/lib64:/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 ENV PATH /usr/local/anaconda3/bin:$CUDA_ROOT/bin:$PATH
 
+RUN apt-get update && \
+	apt-get install -y build-essential
+
 # Install Anaconda
-COPY bzip2_1.0.6-8_amd64.deb /root
 COPY Anaconda3-5.1.0-Linux-x86_64.sh /root
 
-RUN dpkg -i /root/bzip2_1.0.6-8_amd64.deb && \
-	rm -f /root/bzip2_1.0.6-8_amd64.deb && \
-	bash /root/Anaconda3-5.1.0-Linux-x86_64.sh -b -p /usr/local/anaconda3 && \
+RUN bash /root/Anaconda3-5.1.0-Linux-x86_64.sh -b -p /usr/local/anaconda3 && \
 	rm -f /root/Anaconda3-5.1.0-Linux-x86_64.sh
+
+# Install cudatoolkit for numba
+RUN conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ && \
+	conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/ && \
+	conda config --set show_channel_urls yes && \
+	conda install -y cudatoolkit
 
 # Add a notebook profile.
 RUN mkdir -p -m 700 /root/.jupyter/ && \
 	echo "c.NotebookApp.ip = '*'" >> /root/.jupyter/jupyter_notebook_config.py && \
-	echo "c.NotebookApp.token = ''" >> /root/.jupyter/jupyter_notebook_config.py
+	echo "c.NotebookApp.token = ''" >> /root/.jupyter/jupyter_notebook_config.py && \
+	echo "c.NotebookApp.allow_root = True" >> /root/.jupyter/jupyter_notebook_config.py && \
+	echo "c.NotebookApp.open_browser = False" >> /root/.jupyter/jupyter_notebook_config.py
+
 
 EXPOSE 8888
 

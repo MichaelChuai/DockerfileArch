@@ -2,9 +2,6 @@ FROM gtf
 
 MAINTAINER MichaelChuai 18alexanderm117@tongji.edu.cn
 
-RUN apt-get update && \
-	apt-get install -y gcc
-
 RUN	/usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple tfutil==0.4
 
 RUN	/usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple biopython==1.71 && \
