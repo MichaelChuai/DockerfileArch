@@ -13,9 +13,7 @@ __pycache__/
 .Python
 env/
 build/
-build-conda/
-build-tf/
-build-work/
+build-*/
 develop-eggs/
 dist/
 downloads/
