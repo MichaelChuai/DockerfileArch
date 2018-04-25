@@ -13,11 +13,12 @@ RUN apt-get install -y libssl1.0.0 && \
 	rm -f /root/openssl_1.0.2g-1ubuntu4.12_amd64.deb
 
 RUN rm -rf /etc/apt/sources.list.d/* && \
+	sed -i 's/deb-src/# dev-src/g; s/deb http:\/\/archive.ubuntu.com/deb http:\/\/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
 	echo "deb http://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/linux/ubuntu xenial/" >> /etc/apt/sources.list && \
 	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
 	apt-get update -o Acquire-by-hash=yes -o Acquire::https::No-Cache=True -o Acquire::http::No-Cache=True
 
-RUN apt-get install -y bsdmainutils libxv1 r-cran-cluster libhtml-form-perl fonts-dejavu-core
+RUN apt-get install -y bsdmainutils libxv1 r-cran-cluster libhtml-form-perl fonts-dejavu-core r-cran-survival libhtml-tree-perl
 
 RUN apt-get install -y r-base
 
