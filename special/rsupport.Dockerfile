@@ -4,13 +4,15 @@ MAINTAINER MichaelChuai 18alexanderm117@tongji.edu.cn
 
 # Install R
 
+COPY libssl1.0.0_1.0.2g-1ubuntu4_amd64.deb /root
 COPY openssl_1.0.2g-1ubuntu4.12_amd64.deb /root
 COPY biocLite.R /root
 COPY R.inst /root
 
-RUN apt-get install -y libssl1.0.0 && \
+RUN dpkg -i /root/libssl1.0.0_1.0.2g-1ubuntu4_amd64.deb && \
 	dpkg -i /root/openssl_1.0.2g-1ubuntu4.12_amd64.deb && \
-	rm -f /root/openssl_1.0.2g-1ubuntu4.12_amd64.deb
+	rm -f /root/openssl_1.0.2g-1ubuntu4.12_amd64.deb && \
+	rm -f /root/libssl1.0.0_1.0.2g-1ubuntu4_amd64.deb
 
 RUN apt-get install -y libhtml-parser-perl libxcb1 bsdmainutils libxv1 libhtml-form-perl fonts-dejavu-core libhtml-tree-perl libpaper1 && \
 	apt-get install -y xauth libx11-xcb1 libjbig0 bzip2-doc m4 shared-mime-info autotools-dev automake libfile-desktopentry-perl && \
