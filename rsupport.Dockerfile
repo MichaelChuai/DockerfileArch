@@ -1,4 +1,6 @@
-FROM bioinfor:latest
+### R == 3.4.4
+
+FROM gconda:latest
 
 MAINTAINER MichaelChuai 18alexanderm117@tongji.edu.cn
 
@@ -8,6 +10,7 @@ COPY libssl1.0.0_1.0.2g-1ubuntu4_amd64.deb /root
 COPY openssl_1.0.2g-1ubuntu4.12_amd64.deb /root
 COPY biocLite.R /root
 COPY R.inst /root
+COPY rstudio-server-1.1.447-amd64.deb /root
 
 RUN dpkg -i /root/libssl1.0.0_1.0.2g-1ubuntu4_amd64.deb && \
 	dpkg -i /root/openssl_1.0.2g-1ubuntu4.12_amd64.deb && \
@@ -25,13 +28,20 @@ RUN apt-get install -y libhtml-parser-perl libxcb1 bsdmainutils libxv1 libhtml-f
 	apt-get install -y libx11-protocol-perl x11-utils && \
 	apt-get install -y libsys-hostname-long-perl
 
-RUN rm -rf /etc/apt/sources.list.d/* && \
-	sed -i 's/deb-src/# dev-src/g; s/deb http:\/\/archive.ubuntu.com/deb http:\/\/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
-	echo "deb http://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/linux/ubuntu xenial/" >> /etc/apt/sources.list && \
+RUN echo "deb http://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/linux/ubuntu xenial/" >> /etc/apt/sources.list && \
 	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
 	apt-get update -o Acquire-by-hash=yes -o Acquire::https::No-Cache=True -o Acquire::http::No-Cache=True
 
-RUN apt-get install -y r-base
+RUN apt-get install -y r-base=3.4.4-1xenial0 gdebi-core
+
+RUN /usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple rpy2==2.9.3
+
+RUN gdebi -n /root/rstudio-server-1.1.447-amd64.deb && \
+	rm -f /root/rstudio-server-1.1.447-amd64.deb && \
+	echo "auth-minimum-user-id=0" >> /etc/rstudio/rserver.conf && \
+	echo "server-daemonize=0" >> /etc/rstudio/rserver.conf && \
+	echo "server-app-armor-enabled=0" >> /etc/rstudio/rserver.conf && \
+	echo root:root | chpasswd
 
 RUN echo 'options("repos" = c(CRAN="http://mirrors.ustc.edu.cn/CRAN/"))' > /root/.Rprofile && \
 	echo 'options(BioC_mirror="http://mirrors.ustc.edu.cn/bioc/")' >> /root/.Rprofile
@@ -40,6 +50,7 @@ RUN R --no-save < /root/R.inst && \
 	rm -f /root/biocLite.R && \
 	rm -f /root/R.inst
 
+EXPOSE 8787
 
 CMD ["/bin/bash"]
 
