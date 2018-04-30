@@ -3,7 +3,7 @@
 ### CUDA == 9.0
 ### CUDNN == 7
 
-FROM gconda:latest
+FROM bioinfor:latest
 
 MAINTAINER MichaelChuai 18alexanderm117@tongji.edu.cn
 
