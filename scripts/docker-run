@@ -27,7 +27,6 @@ def main():
 
     opts = p.parse_args()
 
-    name = '{0}_{1}'.format(os.environ['USER'], opts.name)
     port_mapping = opts.p
     volumes_from = opts.volumes_from
     workdir = opts.workdir
@@ -36,6 +35,7 @@ def main():
     image = opts.IMAGE
     command = opts.COMMAND
     arg = opts.ARG
+    name = '{0}_{1}_{2}'.format(os.environ['USER'], container_type, opts.name)
 
     if port_mapping is None:
         port_mapping_desp = ''
