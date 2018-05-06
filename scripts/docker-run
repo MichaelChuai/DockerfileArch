@@ -2,7 +2,7 @@
 
 import argparse
 import subprocess
-
+import os
 
 def main():
     prog = 'docker-run'
@@ -27,7 +27,7 @@ def main():
 
     opts = p.parse_args()
 
-    name = opts.name
+    name = '{0}_{1}'.format(os.environ['USER'], opts.name)
     port_mapping = opts.p
     volumes_from = opts.volumes_from
     workdir = opts.workdir
