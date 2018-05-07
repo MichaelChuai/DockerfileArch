@@ -17,7 +17,8 @@ RUN dpkg -i /root/libssl1.0.0_1.0.2g-1ubuntu4_amd64.deb && \
 	rm -f /root/openssl_1.0.2g-1ubuntu4.12_amd64.deb && \
 	rm -f /root/libssl1.0.0_1.0.2g-1ubuntu4_amd64.deb
 
-RUN apt-get install -y libhtml-parser-perl libxcb1 bsdmainutils libxv1 libhtml-form-perl fonts-dejavu-core libhtml-tree-perl libpaper1 && \
+RUN apt-get install -y libhtml-tree-perl && \
+	apt-get install -y libhtml-parser-perl libxcb1 bsdmainutils libxv1 libhtml-form-perl fonts-dejavu-core libpaper1 && \
 	apt-get install -y xauth libx11-xcb1 libjbig0 bzip2-doc m4 shared-mime-info autotools-dev automake libfile-desktopentry-perl && \
 	apt-get install -y libcroco3 libtinfo-dev pkg-config libelf1 libedit2 libdatrie1 libsensors4 libncurses5-dev libdrm2 && \
 	apt-get install -y libdrm-intel1 libgl1-mesa-glx libsasl2-2 libbz2-dev && \
