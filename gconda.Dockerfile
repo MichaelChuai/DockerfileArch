@@ -14,6 +14,7 @@ ENV CUDA_ROOT /usr/local/cuda
 ENV LD_LIBRARY_PATH /usr/lib64:$CUDA_ROOT/lib64:/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 ENV PATH /usr/local/anaconda3/bin:$CUDA_ROOT/bin:$PATH
 ENV LANG en_US.UTF-8
+ENV LC_ALL C
 
 RUN rm -rf /etc/apt/sources.list.d/* && \
 	sed -i 's/deb-src/# dev-src/g; s/deb http:\/\/archive.ubuntu.com/deb http:\/\/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
