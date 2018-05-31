@@ -1,6 +1,6 @@
 #! /bin/bash
 
-cp rsupport.Dockerfile build-rsupport/Dockerfile
+cp df2_rsupport.Dockerfile build-rsupport/Dockerfile
 
 cd build-rsupport/ && docker build -t rgconda:3.4.4 -t rgconda ./
 

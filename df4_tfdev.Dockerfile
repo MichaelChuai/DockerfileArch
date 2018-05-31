@@ -7,8 +7,6 @@ FROM bioinfor:latest
 
 MAINTAINER MichaelChuai 18alexanderm117@tongji.edu.cn
 
-ENV LC_ALL C
-
 # Install Tensorflow
 RUN	/usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple tensorflow-gpu==1.8.0
 

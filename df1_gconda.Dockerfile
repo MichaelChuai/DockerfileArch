@@ -19,7 +19,7 @@ ENV LC_ALL C
 RUN rm -rf /etc/apt/sources.list.d/* && \
 	sed -i 's/deb-src/# dev-src/g; s/deb http:\/\/archive.ubuntu.com/deb http:\/\/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
 	apt-get update -o Acquire-by-hash=yes -o Acquire::https::No-Cache=True -o Acquire::http::No-Cache=True && \
-	apt-get install -y build-essential
+	apt-get install -y build-essential less
 
 # Install Anaconda
 COPY Anaconda3-5.1.0-Linux-x86_64.sh /root

@@ -1,6 +1,6 @@
 #! /bin/bash
 
-cp work.Dockerfile build-work/Dockerfile
+cp df5_work.Dockerfile build-work/Dockerfile
 
 cd build-work/ && docker build -t work ./
 
