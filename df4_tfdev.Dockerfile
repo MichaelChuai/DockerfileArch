@@ -16,6 +16,14 @@ RUN /usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.c
 # Install Utilities
 RUN	/usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple tqdm==4.19.8
 
+
+# Install gym
+RUN apt-get update && apt-get install -y cmake zlib1g-dev libjpeg-dev xvfb libav-tools xorg-dev libboost-all-dev libsdl2-dev swig libopenblas-base libatlas-dev
+
+RUN /usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple PyOpenGL piglet pyglet==1.2.4
+
+RUN /usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple gym[all]
+
 EXPOSE 6006
 
 CMD ["/bin/bash"]
