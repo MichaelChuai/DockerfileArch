@@ -38,8 +38,8 @@ RUN	apt-get install -y libx11-protocol-perl x11-utils && \
 
 RUN apt-get install -y python-scour libpixman-1-0
 
-RUN echo "deb http://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/linux/ubuntu xenial/" >> /etc/apt/sources.list && \
-	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
+RUN echo "deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/" >> /etc/apt/sources.list && \
+	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
 	apt-get update -o Acquire-by-hash=yes -o Acquire::https::No-Cache=True -o Acquire::http::No-Cache=True
 
 RUN apt-get install -y r-base=3.4.4-1xenial0 gdebi-core
