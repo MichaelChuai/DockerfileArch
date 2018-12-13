@@ -9,6 +9,9 @@ RUN	/usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.c
 RUN /usr/local/anaconda3/bin/pip --no-cache-dir install /root/dm_sonnet-1.9-cp36-cp36m-linux_x86_64.whl && \
 	rm -f /root/dm_sonnet-1.9-cp36-cp36m-linux_x86_64.whl
 
+RUN	/usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple tqdm==4.19.8
+
+RUN	/usr/local/anaconda3/bin/pip --no-cache-dir install -i https://pypi.douban.com/simple tfutil
 
 EXPOSE 6006
 
