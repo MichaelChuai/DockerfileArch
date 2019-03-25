@@ -21,6 +21,8 @@ def main():
                    help='Working directory inside the container')
     p.add_argument('-t', type=str, help='Container type, -1 for CPU, -2 for all gpus, 0 for gpu-0, 1 for gpu-1, etc.',
                    required=True)
+    p.add_argument('-g', type=int, default=0, choices=(0, 1, 2),
+                   help='Using GUI or not, 2 for remote ssh, 1 for local Xserver, 0(default) not')
     p.add_argument('-z', type=int, default=0, choices=(0, 1),
                    help='Keep container or not, 1 for keeping, 0(default) not')
     p.add_argument('IMAGE', default='work:latest', nargs='?')
@@ -33,6 +35,7 @@ def main():
     volumes_from = opts.volumes_from
     workdir = opts.workdir
     container_type = opts.t
+    gui = opts.g
     keep_container = opts.z
     image = opts.IMAGE
     command = opts.COMMAND
@@ -58,20 +61,29 @@ def main():
     else:
         runtime_desp = '--runtime nvidia -e CUDA_VISIBLE_DEVICES={0}'.format(container_type)
 
+    if gui == 0:
+        gui_desp = ''
+    elif gui == 1:
+        gui_desp = '-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY'
+    elif gui == 2:
+        gui_desp = '--net=host -e DISPLAY=:10.0 -v $HOME/.Xauthority:/root/.Xauthority'
+
+
     if keep_container == 0:
         keep_container_desp = '--rm'
     else:
         keep_container_desp = ''
 
-    cmd = 'docker run -it --log-opt max-size=10m --log-opt max-file=5 {1} {2} {4} -v $(pwd):{3} --name {0} {5} -w {3} {6} {7} {8}'.format(
+    cmd = 'docker run -it --log-opt max-size=10m --log-opt max-file=5 {1} {2} {4} {9} -v $(pwd):{3} --name {0} {5} -w {3} {6} {7} {8}'.format(
         name, port_mapping_desp,
         volumes_from_desp,
         workdir,
         keep_container_desp,
         runtime_desp, image,
         command,
-        arg)
+        arg, gui_desp)
 
+    # print(cmd)
     exit_code = subprocess.call(cmd, executable='/bin/bash', shell=True)
     return exit_code
 
